@@ -81,13 +81,12 @@
     audio.play();
   }
 
-  window.addEventListener('keydown', playSound);
+  const keys = Array.from(document.querySelectorAll('.key'));
 
-  document.querySelectorAll('.key').forEach(key => {
+  window.addEventListener('keydown', playSound);
+  keys.forEach(key => {
     key.addEventListener('transitionend', removePlaying)
   })
-
-
 
 </script>
 
