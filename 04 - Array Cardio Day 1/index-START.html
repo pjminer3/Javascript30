@@ -42,13 +42,15 @@
     // Array.prototype.sort()
     // 3. Sort the inventors by birthdate, oldest to youngest
     const oldestToYoungest = inventors.sort((a, b) => {
-      if (a.year > b.year) {
-        return 1;
-      } else {
-        return -1;
-      }  
+      // if (a.year > b.year) {
+      //   return 1;
+      // } else {
+      //   return -1;
+      // }  
+
+      return a.year > b.year ? 1 : -1;
     }); // console.log results (or use console.table())
-    console.log(oldestToYoungest);
+    console.table(oldestToYoungest);
 
     // Array.prototype.reduce()
     // 4. How many years did all the inventors live?
@@ -59,20 +61,42 @@
 
     // 5. Sort the inventors by years lived
     const longestLived = inventors.sort((a, b) => {
-      return (b.passed - b.year) - (a.passed - a.year);
+      aAge = a.passed - a.year;
+      bAge = b.passed - b.year;
+      return aAge > bAge ? -1 : 1;
     });
-    console.log(longestLived);
+    console.table(longestLived);
 
     // 6. create a list of Boulevards in Paris that contain 'de' anywhere in the name
     // https://en.wikipedia.org/wiki/Category:Boulevards_in_Paris
 
+    // const categoryContainer = document.querySelector('.mw-category');
+    // const links = categoryContainer.querySelectorAll('a'); // returns a nodeList of all the links in mw-category
+    // const de = Array.from(links)
+    //   .map(street => street.title)
+    //   .filter(streetName => streetName.includes('de'));
+
 
     // 7. sort Exercise
     // Sort the people alphabetically by last name
+    const sortedNames = people.sort((a, b) => {
+      aLastName = a.slice(0, a.indexOf(','));
+      bLastName = b.slice(0, b.indexOf(','));
+
+      return aLastName.localeCompare(bLastName);
+    });
+    console.log(sortedNames);
 
     // 8. Reduce Exercise
     // Sum up the instances of each of these
     const data = ['car', 'car', 'truck', 'truck', 'bike', 'walk', 'car', 'van', 'bike', 'walk', 'car', 'van', 'car', 'truck' ];
+
+   const instances = data.reduce((obj, word) => {
+    obj[word] = obj[word] + 1 || 1;
+    return obj;
+   }, {});
+
+   console.table(instances);
 
   </script>
 </body>
