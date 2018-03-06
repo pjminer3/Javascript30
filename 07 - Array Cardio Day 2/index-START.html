@@ -35,10 +35,18 @@
     // Array.prototype.find()
     // Find is like filter, but instead returns just the one you are looking for
     // find the comment with the ID of 823423
+    const comment = comments.find( comment => comment.id === 823423);
+    console.log('comment: ', comment);
 
-    // Array.prototype.findIndex()
+    // Array.prototype.findIndex() (returns an index)
     // Find the comment with this ID
     // delete the comment with the ID of 823423
+    const idx = comments.findIndex( comment => comment.id === 823423);
+    const newComments = [
+      ...comments.slice(0, idx),
+      ...comments.slice(idx + 1)
+    ];
+    console.table(newComments);
 
   </script>
 </body>
