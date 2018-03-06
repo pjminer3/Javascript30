@@ -7,6 +7,47 @@
 <body>
 <canvas id="draw" width="800" height="800"></canvas>
 <script>
+  const canvas = document.querySelector('#draw');
+  const ctx = canvas.getContext('2d');
+  let locationX = 0;
+  let locationY = 0;
+  let draw = false;
+  let hue = 0;
+  
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  
+
+  ctx.lineJoin = 'round';
+  ctx.lineCap = 'round';
+  ctx.lineWidth = 15;
+
+
+  canvas.addEventListener('mousemove', drawLine);
+  // on mouse downclick set draw to true
+  canvas.addEventListener('mousedown', (e) => {
+    // console.log(e);
+    [locationX, locationY] = [e.offsetX, e.offsetY];
+    draw = true
+  });
+  // on mouse upclick set draw to false
+  canvas.addEventListener('mouseup', () => {draw = true});
+  // on mouse leave screen set draw to false
+  canvas.addEventListener('mouseup', () => {draw = false});
+
+  function drawLine(e) {
+    if (!draw) return;
+
+    ctx.beginPath();
+    ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;
+    ctx.moveTo(locationX, locationY);
+    ctx.lineTo(e.offsetX, e.offsetY);
+    ctx.stroke();
+    [locationX, locationY] = [e.offsetX, e.offsetY];
+    hue++
+  }
+
+
 </script>
 
 <style>
