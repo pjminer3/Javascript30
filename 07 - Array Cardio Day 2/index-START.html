@@ -26,7 +26,11 @@
 
     // Some and Every Checks
     // Array.prototype.some() // is at least one person 19 or older?
+    const olderThan19 = people.some(person => new Date().getFullYear() - person.year > 18);
+    console.log('olderThan19: ', olderThan19); // true
     // Array.prototype.every() // is everyone 19 or older?
+    const allOlderThan18 = people.every(person => new Date().getFullYear() - person.year > 18);
+    console.log('allOlderThan18: ', allOlderThan18); // false
 
     // Array.prototype.find()
     // Find is like filter, but instead returns just the one you are looking for
