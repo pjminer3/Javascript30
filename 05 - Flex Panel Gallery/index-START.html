@@ -24,6 +24,9 @@
     .panels {
       min-height:100vh;
       overflow: hidden;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
     }
 
     .panel {
@@ -41,6 +44,10 @@
       font-size: 20px;
       background-size:cover;
       background-position:center;
+      display: flex;
+      flex: 1 0 auto;
+      flex-direction: column;
+      /* flex => grow shrink basis */
     }
 
 
@@ -54,6 +61,26 @@
       margin:0;
       width: 100%;
       transition:transform 0.5s;
+      /* border: 1px solid red; */
+      display: flex;
+      flex: 1 0 auto;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* THE BELOW IS FOR SHOWING TEXT FLY UP AND DOWN FROM THE SCREEN */
+    .panel > *:first-child {
+      transform: translateY(-100%);
+    }
+    .panel.active > *:first-child {
+      transform: translateY(0%);
+    }
+
+    .panel > *:last-child {
+      transform: translateY(100%);
+    }
+    .panel.active > *:last-child {
+      transform: translateY(0%);
     }
 
     .panel p {
@@ -68,7 +95,9 @@
 
     .panel.open {
       font-size:40px;
+      flex-grow: 5;
     }
+
 
   </style>
 
@@ -102,7 +131,27 @@
   </div>
 
   <script>
+    // get a nodelist of all panels
+    const panels = document.querySelectorAll('.panel');
 
+    function toggleOpen(e) {
+      // function that toggles the 'open' class
+      console.log('Clicked; toggled "open"');
+      this.classList.toggle('open');
+    }
+
+    function toggleActive(e) {
+      // function that toggles the 'active' class
+      console.log('Transition over: ', e.propertyName);
+      if (e.propertyName.includes('flex')) {
+        this.classList.toggle('active');
+      }
+    }
+
+    panels.forEach(panel => {
+      panel.addEventListener('click', toggleOpen);
+      panel.addEventListener('transitionend', toggleActive);
+    });
   </script>
 
 
