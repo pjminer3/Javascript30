@@ -18,7 +18,7 @@ function mouseDown() {
 }
 
 function mouseUp() {
-  mouseCliced = false;
+  mouseClicked = false;
 }
 
 function togglePlay() {
@@ -41,14 +41,16 @@ function skip() {
 }
 
 function handleRangeUpdate(e) {
-  if (!mouseClicked) return;
+  if (e.type === 'click') {
+    video[this.name] = this.value;
+  }
 
+  // for drag functionality
+  if (!mouseClicked) return;
   video[this.name] = this.value;
 }
 
 function handleProgress() {
-  // function to handle the progress bar by updating the flex-basis
-  console.log('handlgin progress');
   // get % of video that has been watched 
   const currentPerc = this.currentTime / this.duration;
   // apply that percent to the flex basis of the progress bar
@@ -56,11 +58,14 @@ function handleProgress() {
 }
 
 function scrub(e) {
-  // use this function to enable 'scrubbing' on the progress bar
-  // const barProgress = e.offsetX;
-  // const barPercProgress = barProgress / this.offsetWidth;
-  // // set the new value on the video
-  // video[this.name] = barPercProgress.toFixed(2);
+  // if (!mouseClicked) return;
+
+  // get the percetage of the progress bar you clicked
+  const barPerc = e.offsetX / progress.offsetWidth;
+  // convert that to a percentage of time
+  const newTime = (barPerc * video.duration).toFixed(2);
+  // set video current time to the time
+  video.currentTime = newTime;
 }
 
 
@@ -79,10 +84,16 @@ function scrub(e) {
   })
   // 2. add listeners for both sliders on change (and on move, only when clicking it)
   ranges.forEach(range => {
+    range.addEventListener('click', handleRangeUpdate);
     range.addEventListener('mousedown', mouseDown);
     range.addEventListener('mouseup', mouseUp);
     range.addEventListener('mousemove', handleRangeUpdate);
   })
 
   // 4. Listen on progress bar for a click
+  progress.addEventListener('click', scrub);
+  progress.addEventListener('mousemove', (e) => mouseClicked && scrub(e));
+  progress.addEventListener('mousedown', mouseDown);
+  progress.addEventListener('mouseup', mouseUp);
+
   // 5. List on progress bar for a drag and drop
