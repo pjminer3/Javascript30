@@ -1,4 +1,5 @@
 /* Get Our Elements */
+console.log('FINSIHED')
 const player = document.querySelector('.player');
 const video = player.querySelector('.viewer');
 const progress = player.querySelector('.progress');

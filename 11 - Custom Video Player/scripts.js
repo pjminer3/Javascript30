@@ -41,12 +41,12 @@ function skip() {
 }
 
 function handleRangeUpdate(e) {
-  if (e.type === 'click') {
-    video[this.name] = this.value;
-  }
+  // if (e.type === 'click') {
+  //   video[this.name] = this.value;
+  // }
 
   // for drag functionality
-  if (!mouseClicked) return;
+  // if (!mouseClicked) return;
   video[this.name] = this.value;
 }
 
@@ -84,9 +84,9 @@ function scrub(e) {
   })
   // 2. add listeners for both sliders on change (and on move, only when clicking it)
   ranges.forEach(range => {
-    range.addEventListener('click', handleRangeUpdate);
-    range.addEventListener('mousedown', mouseDown);
-    range.addEventListener('mouseup', mouseUp);
+    range.addEventListener('change', handleRangeUpdate);
+    // range.addEventListener('mousedown', mouseDown);
+    // range.addEventListener('mouseup', mouseUp);
     range.addEventListener('mousemove', handleRangeUpdate);
   })
 
