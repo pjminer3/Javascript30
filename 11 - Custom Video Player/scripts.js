@@ -5,11 +5,10 @@ const progress = player.querySelector('.progress');
 const progressBar = player.querySelector('.progress__filled');
 const toggle = player.querySelector('.toggle');
 const skipButtons = player.querySelectorAll('[data-skip]');
+const fullScreenButton = player.querySelector('.player__fullScreen');
 const ranges = player.querySelectorAll('.player__slider[type="range"]');
 
 let mouseClicked = false;
-
-
 
 
 // BUILD OUT FUNCTIONS
@@ -41,12 +40,6 @@ function skip() {
 }
 
 function handleRangeUpdate(e) {
-  // if (e.type === 'click') {
-  //   video[this.name] = this.value;
-  // }
-
-  // for drag functionality
-  // if (!mouseClicked) return;
   video[this.name] = this.value;
 }
 
@@ -58,14 +51,16 @@ function handleProgress() {
 }
 
 function scrub(e) {
-  // if (!mouseClicked) return;
-
   // get the percetage of the progress bar you clicked
   const barPerc = e.offsetX / progress.offsetWidth;
   // convert that to a percentage of time
   const newTime = (barPerc * video.duration).toFixed(2);
   // set video current time to the time
   video.currentTime = newTime;
+}
+
+function toggleFullScreen() {
+  video.webkitRequestFullscreen();
 }
 
 
@@ -85,15 +80,16 @@ function scrub(e) {
   // 2. add listeners for both sliders on change (and on move, only when clicking it)
   ranges.forEach(range => {
     range.addEventListener('change', handleRangeUpdate);
-    // range.addEventListener('mousedown', mouseDown);
-    // range.addEventListener('mouseup', mouseUp);
+
+    // this is ok because the value of the ranges doesnt change when moving mouse unless you are clicked down
     range.addEventListener('mousemove', handleRangeUpdate);
   })
 
-  // 4. Listen on progress bar for a click
+  // 4. Listen on progress bar for a click and drag
   progress.addEventListener('click', scrub);
   progress.addEventListener('mousemove', (e) => mouseClicked && scrub(e));
   progress.addEventListener('mousedown', mouseDown);
   progress.addEventListener('mouseup', mouseUp);
 
-  // 5. List on progress bar for a drag and drop
+  // 5. make button make video player full screen
+  fullScreenButton.addEventListener('click', toggleFullScreen);
