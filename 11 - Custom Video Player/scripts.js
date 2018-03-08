@@ -7,10 +7,20 @@ const toggle = player.querySelector('.toggle');
 const skipButtons = player.querySelectorAll('[data-skip]');
 const ranges = player.querySelectorAll('.player__slider[type="range"]');
 
+let mouseClicked = false;
+
 
 
 
 // BUILD OUT FUNCTIONS
+function mouseDown() {
+  mouseClicked = true;
+}
+
+function mouseUp() {
+  mouseCliced = false;
+}
+
 function togglePlay() {
   // when called, toggle from paused/play
   // do it with a turnerary operator
@@ -24,13 +34,33 @@ function updateButton(e) {
 }
 
 function skip() {
-  console.log('skipping');
-  // make buttons skip when clicked
+  // get the skip value
+  const timeSkip = this.dataset.skip;
+  // change the movie time
+  video.currentTime += parseFloat(timeSkip);
 }
 
-function handleRangeUpdate() {
-  console.log(this.value);
-  // make both ranges change (volume and speed) with this one function
+function handleRangeUpdate(e) {
+  if (!mouseClicked) return;
+
+  video[this.name] = this.value;
+}
+
+function handleProgress() {
+  // function to handle the progress bar by updating the flex-basis
+  console.log('handlgin progress');
+  // get % of video that has been watched 
+  const currentPerc = this.currentTime / this.duration;
+  // apply that percent to the flex basis of the progress bar
+  progressBar.style.flexBasis = `${currentPerc * 100}%`;
+}
+
+function scrub(e) {
+  // use this function to enable 'scrubbing' on the progress bar
+  // const barProgress = e.offsetX;
+  // const barPercProgress = barProgress / this.offsetWidth;
+  // // set the new value on the video
+  // video[this.name] = barPercProgress.toFixed(2);
 }
 
 
@@ -41,5 +71,18 @@ function handleRangeUpdate() {
   // add a listener on the video to change the play button (while it's playing)
   video.addEventListener('play', updateButton);
   video.addEventListener('pause', updateButton);
+  // add a video listener to update the progress bar
+  video.addEventListener('timeupdate', handleProgress);
   // call skip() on a click to any skip button
-  // add listeners for both sliders on change (and on move, only when clicking it)
+  skipButtons.forEach( button => {
+    button.addEventListener('click', skip);
+  })
+  // 2. add listeners for both sliders on change (and on move, only when clicking it)
+  ranges.forEach(range => {
+    range.addEventListener('mousedown', mouseDown);
+    range.addEventListener('mouseup', mouseUp);
+    range.addEventListener('mousemove', handleRangeUpdate);
+  })
+
+  // 4. Listen on progress bar for a click
+  // 5. List on progress bar for a drag and drop
