@@ -98,7 +98,44 @@
     </div>
   </div>
 
-<script>
-</script>
+  <script>  
+  // VARIABLES:
+    // checkboxes
+    const checkboxes = document.querySelectorAll('.inbox input[type="checkbox"]');
+    // lastChecked
+    let lastChecked = undefined;
+    let isBetween = false;
+
+  // FUNCTIONS: 
+    // handleCheck(e)
+    function handleClick(e) {
+      // if the box is checked and the shift key was pressed
+      if (this.checked && e.shiftKey) {
+        // iterate through all inputs
+        checkboxes.forEach( checkbox => {
+          // iterate until you find this || last checked
+          if (checkbox === this || checkbox === lastChecked) {
+            // turn isBetween to it's opposite
+            isBetween = !isBetween;
+          }
+          // if isBetween
+          if (isBetween) {
+            // set it's .checked = true;
+            checkbox.checked = true;
+          }
+        })
+      } else if (this.checked) { 
+        // sets new lastChecked if the box is unchecked
+        lastChecked = this;
+      }
+    }
+
+  // EVENT LISTENERS
+    // input on click
+    checkboxes.forEach(checkbox => checkbox.addEventListener('click', handleClick));
+
+    
+    
+  </script>
 </body>
 </html>
