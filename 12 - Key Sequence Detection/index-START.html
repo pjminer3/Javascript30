@@ -9,15 +9,12 @@
 <script>
   const secretCode = 'pjm';
 
-  let keysPressed = [];
+  const keysPressed = [];
 
   window.addEventListener('keyup', (e) => {
     keysPressed.push(e.key);
 
-    keysPressed = keysPressed.slice(-secretCode.length);
-    console.log(keysPressed);
-
-    keysPressed.splic
+    keysPressed.splice(-secretCode.length - 1, keysPressed.length - secretCode.length);
 
     if (keysPressed.join('').includes(secretCode)) {
       console.log('WINNER!');
