@@ -7,6 +7,22 @@
 </head>
 <body>
 <script>
+  const secretCode = 'pjm';
+
+  let keysPressed = [];
+
+  window.addEventListener('keyup', (e) => {
+    keysPressed.push(e.key);
+
+    keysPressed = keysPressed.slice(-secretCode.length);
+    console.log(keysPressed);
+
+    keysPressed.splic
+
+    if (keysPressed.join('').includes(secretCode)) {
+      console.log('WINNER!');
+    }
+  })
 </script>
 </body>
 </html>
