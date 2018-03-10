@@ -58,6 +58,17 @@
       };
     }
 
+    // select all images
+    const images = document.querySelectorAll('.slide-in');
+    
+    // make function checkSlide
+    const checkSlide = (e) => {
+      console.count(e);
+    }
+
+    // add the event listener on scroll that calls checkSlide (debounce that shit though)
+    window.addEventListener('scroll', debounce(checkSlide));
+
   </script>
 
   <style>
