@@ -60,14 +60,35 @@
 
     // select all images
     const images = document.querySelectorAll('.slide-in');
-    
+
     // make function checkSlide
     const checkSlide = (e) => {
-      console.count(e);
+      // need to see if image should have the class of .slide-in.active
+      images.forEach(image => {
+        // create the number we have to scroll to to be showing half the image
+        const sliderImagePos = (window.scrollY + window.innerHeight) - (image.height / 2);
+
+        // create the number we have to scroll past to re-hide an image
+        const imageBottom = image.offsetTop + image.height;
+
+        const scrolledPassedMid = image.offsetTop < sliderImagePos;
+        const scrolledPassedBot = window.scrollY > imageBottom;
+
+        if (scrolledPassedMid && !scrolledPassedBot) {
+          image.classList.add('active');
+        } else {
+          image.classList.remove('active');
+        }
+
+        console.log('sliderImagePos: ', sliderImagePos);
+        console.log('Bottom of Window: ', window.scrollY + window.innerHeight);
+        console.log('ImageBottom: ', imageBottom);
+        console.log('Top of Window: ', window.scrollY);
+      });
     }
 
     // add the event listener on scroll that calls checkSlide (debounce that shit though)
-    window.addEventListener('scroll', debounce(checkSlide));
+    window.addEventListener('scroll', debounce(checkSlide, 20));
 
   </script>
 
