@@ -35,6 +35,53 @@
   </style>
 
 <script>
+  // debounce function
+  function debounce(func, wait = 20, immediate = true) {
+      var timeout;
+      return function() {
+        var context = this, args = arguments;
+        var later = function() {
+          timeout = null;
+          if (!immediate) func.apply(context, args);
+        };
+        var callNow = immediate && !timeout;
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+        if (callNow) func.apply(context, args);
+      };
+    }
+
+  const hero = document.querySelector('.hero');
+  const text = hero.querySelector('h1');
+
+  function shadow(e) {
+    // mouses location
+    let mouseLocationX = e.offsetX;
+    let mouseLocationY = e.offsetY;
+    const { offsetHeight: height, offsetWidth: width } = hero;
+
+    // image location:
+    const { offsetLeft: imgFromLeft, offsetTop: imgFromTop } = text;
+
+    // walk of the shadow
+    const walk = 300; // 100px
+
+    // to get True Mouse location
+    if (this !== e.target) {
+      mouseLocationX = mouseLocationX + imgFromLeft;
+      mouseLocationY = mouseLocationY + imgFromTop;
+    }
+
+    const walkX = Math.round((mouseLocationX / width * walk) - (walk / 2)); // so walk moves from -50 to +50
+    const walkY = Math.round((mouseLocationY / height * walk) - (walk / 2)); 
+
+    text.style.textShadow = `${-walkX}px ${-walkY}px 0px red, ${walkX}px ${walkY}px 0px blue, ${walkY}px ${walkX}px 0px yellow, ${-walkY}px ${-walkX}px 0px green`;
+
+    console.log(walkX, walkY);
+  }
+
+  // we want the shadow to move on hero mousemove events
+  hero.addEventListener('mousemove', shadow);
 </script>
 </body>
 </html>
