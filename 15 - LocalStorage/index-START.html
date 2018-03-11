@@ -23,13 +23,90 @@
       <input type="text" name="item" placeholder="Item Name" required>
       <input type="submit" value="+ Add Item">
     </form>
+    <button class="check" data-which="all">Check All</button>
+    <button class="check" data-which="none">Clear All</button>
   </div>
 
 <script>
   const addItems = document.querySelector('.add-items');
   const itemsList = document.querySelector('.plates');
-  const items = [];
+  const items = localStorage.getItem('items') ? JSON.parse(localStorage.getItem('items')) : []; // a call to Local Storage to get stored items if there are any
 
+  
+  // create addItem function that creats an item object with text/done properties
+  function addItem(e) {
+    // on submit => prevent default
+    e.preventDefault();
+    
+    const text = this.querySelector('[name="item"]').value;
+    const item = {
+      text,
+      done: false,
+    }
+    items.push(item);
+    populateList(items, itemsList);
+    // save items to local storage everytime this is called
+    localStorage.setItem('items', JSON.stringify(items));
+    this.reset();
+  }
+ 
+  function populateList(plates = [], plateList) {
+    // create a list item nodes with a label (with attribute for="item[idx]") for all elements in plates
+    plateList.innerHTML = plates.map((plate, idx) => {
+      // the text node
+      // What else does a list item need? Create it with the attributes data-index and id="item[idx]"
+      // also figure out how to make this 2nd node respond appropriately
+      return `
+      <li>
+        <input type="checkbox" data-index="${idx}" id="item${idx}" ${plate.done ? "checked" : ''}>
+        <label for="item${idx}">${plate.text}</label>
+      </li>
+      `
+    }).join('');
+  };
+
+  function toggleDone(e) {
+    if (e.target.type !== 'checkbox') return;
+
+    // grab the index of the item we want to toggle
+    const idx = e.target.dataset.index;
+
+    // grab that object from items and toggle it's 'done'
+    items[idx].done = !items[idx].done;
+
+    // call set storage
+    localStorage.setItem('items', JSON.stringify(items));
+  }
+
+  function markAll(e) {
+    if (e.target.dataset.which === 'all') {
+      items.forEach(item => {
+        item.done = true;
+      })
+    } else {
+      items.forEach(item => {
+        item.done = false;
+      });
+    }
+    
+    localStorage.setItem('items', JSON.stringify(items));
+
+    populateList(items, itemsList);
+  }
+
+   // set up event listener on form to run addItem
+   addItems.addEventListener('submit', addItem);
+   
+   // for proper event delegation select the parent element to receive the event and then in the callback specificy a check that the target is the element you want
+   itemsList.addEventListener('click', toggleDone);
+
+   // call the function that populates the list of items so that they can be rendered
+   populateList(items, itemsList);
+
+   // TODO: make buttons 'check all' and 'uncheck all'
+   document.querySelectorAll('.check').forEach( node => {
+     node.addEventListener('click', markAll);
+   });
 </script>
 
 
