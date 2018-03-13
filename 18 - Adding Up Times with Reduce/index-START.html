@@ -182,67 +182,31 @@
     </li>
   </ul>
 <script>
+  const videoList = document.querySelector('.videos');
+  const videos = document.querySelectorAll('[data-time]');
 
-  function convertTimeToNums(array) {
-    return array.map(string => {
-      return Number(string);
-    })
-  }
+  // get total seconds
+  const totalSeconds = Array.from(videos).reduce((totalSeconds, video) => {
+    let time = video.dataset.time;
+    time = time.split(':');
+    let [minutes, seconds] = time.map(Number);
 
-  function convertNumsToTime(arr) {
-    return arr.map(number => {
-      number = '' + number;
-      console.log('Number: ', number);
-      return number.length === 0 ? '00' :
-        number.length === 1 ? `0${number}` : number;
-    });
-  }
+    return totalSeconds + (minutes * 60) + seconds;
+  }, 0)
 
-  const list = document.querySelector('.videos');
-  const videos = document.querySelectorAll('li[data-time]');
+  // hours
+  const hours = Math.floor(totalSeconds / 3600);
+  // minutes
+  const minutes = Math.floor((Math.floor(totalSeconds % 3600)) / 60);
+  // seconds
+  const seconds = totalSeconds - (hours * 3600) - (minutes * 60);
 
-  const totalTime = Array.from(videos).reduce((totalTime, video) => {
-    // debugger;
-    let totalTimeArr = convertTimeToNums(totalTime.split(':'));
-    const vidTimeArr = convertTimeToNums(video.dataset.time.split(':'));
+  console.log([hours, minutes, seconds]);
 
-    
-  // get the number of seconds
-    // add totalTimeArrr[2] and vidTimeArr[2] together
-    let seconds = totalTimeArr[2] + vidTimeArr[1];
-    // if together > 60 
-    if (seconds > 60) {
-      // add 1 to totalTime array[1] and modulo the number of seconds by 60
-      totalTimeArr[1] += Math.floor(seconds / 60);
-      seconds = seconds % 60;
-    } 
-    totalTimeArr[2] = seconds;
-    
-  // get the number of minutes
-    // add totalTimeArrr[1] and vidTimeArr[1] together
-    let minutes = totalTimeArr[1] + vidTimeArr[0];
-    // if together > 60 
-    if (minutes > 60) {
-      // add 1 to totalTime array[0] and modulo the number of seconds by 60
-      totalTimeArr[0] += Math.floor(minutes / 60);
-      minutes = minutes % 60;
-    }
-    totalTimeArr[1] = minutes;
+  /* get total time in seconds */
 
-    // console.log(totalTimeArr);
-  // convert the array of numbers to an array of strings
-  totalTimeArr = convertNumsToTime(totalTimeArr);
-  // console.log(totalTimeArr);
 
-  // return the array joined by :
-  return totalTimeArr.join(':');
-    
-  }, "00:00:00");
 
-  const totalTimeNode = document.createElement('li');
-  totalTimeNode.innerHTML = `The total time = ${totalTime}`;
-
-  list.appendChild(totalTimeNode);
 </script>
 </body>
 </html>
