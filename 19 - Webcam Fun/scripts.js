@@ -74,6 +74,10 @@ function rgbSplit(pixels) {
     pixels.data[i + 150] = pixels.data[i + 2];
   }
 
+  function greenScreen(pixels) {
+    
+  }
+
   return pixels;
 }
 
