@@ -26,7 +26,42 @@
     </div>
 
   <script>
-    // 👀👀👀👀👀👀👀👀👀👀👀👀👀👀👀
+    // get all links (triggers)
+    const triggers = document.querySelectorAll('a');
+    // create a span node (highlight)
+    const highlight = document.createElement('span');
+    // add class 'highlight' to span node
+    highlight.classList.add('highlight');
+    // append class to the body
+    document.body.appendChild(highlight);
+
+    // create function 'highlightLink'
+    function highlightLink(e) {
+      linkCoords = this.getBoundingClientRect();
+      // create a cords object that houses all the spans properties
+      const coords = {
+      // add height
+        height: linkCoords.height,
+      // add width to highlight
+        width: linkCoords.width,
+      // add transform property 'translate(....)' 
+        // be sure to take into account scrolling
+        x: linkCoords.left,
+        y: linkCoords.top,
+      }
+
+      highlight.style.height = `${coords.height}px`;
+      highlight.style.width = `${coords.width}px`;
+      highlight.style.transform = `translate(${coords.x}px, ${coords.y}px)`;
+    }
+
+    // add event listener to triggers for 'mouseenter' to call highlightLink
+    triggers.forEach( link => {
+      link.addEventListener('mouseenter', highlightLink);
+    });
+
+
+
   </script>
 </body>
 </html>
